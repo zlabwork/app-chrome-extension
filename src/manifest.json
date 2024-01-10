@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "app-chrome-extension",
   "version": "1.0.0",
   "description": "this is description for test",
@@ -9,22 +9,18 @@
     "128": "images/icon.png"
   },
   "background": {
-    "scripts": [
-      "scripts/background.js"
-    ]
+    "service_worker": "scripts/service_worker.js",
+    "type": "module"
   },
-  "page_action": {
+  "action": {
+    "default_popup": "pages/popup.html",
     "default_icon": "images/icon.png",
     "default_title": "图标悬停时的标题[可选]"
   },
   "content_scripts": [
     {
       "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "matches": [
-        "<all_urls>"
+        "*://*/*"
       ],
       "js": [
         "scripts/jquery-3.6.0.min.js",
@@ -47,26 +43,37 @@
       ]
     }
   ],
+  "host_permissions": [
+    "https://*.zlab.dev/",
+    "*://*/*"
+  ],
   "permissions": [
     "contextMenus",
     "tabs",
+    "activeTab",
     "notifications",
     "webRequest",
-    "webRequestBlocking",
     "storage",
-    "http://*/*",
-    "https://*/*"
+    "unlimitedStorage"
+  ],
+  "optional_permissions": [
   ],
   "web_accessible_resources": [
-    "js/inject.js"
+    {
+      "resources": [
+        "images/*"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
+    }
   ],
   "homepage_url": "https://zlab.dev",
   "chrome_url_overrides": {
   },
   "options_page": "pages/options.html",
   "options_ui": {
-    "page": "pages/options.html",
-    "chrome_style": true
+    "page": "pages/options.html"
   },
   "omnibox": {
     "keyword": "go"
